@@ -1,0 +1,247 @@
+{
+  "version": "v1.0",
+  "created_at": "2026-06-21",
+  "description": "Hand-labeled golden dataset for customer support email classifier. Labels set by human review.",
+  "test_cases": [
+    {
+      "id": "TC001",
+      "email": "I can't log into my account. It keeps saying my password is incorrect even though I just reset it.",
+      "expected_category": "account",
+      "expected_summary": "Customer cannot log in despite recently resetting their password.",
+      "difficulty": "easy",
+      "notes": "Clear account access issue. No ambiguity."
+    },
+    {
+      "id": "TC002",
+      "email": "Hi, I was charged $49 twice this month for my Pro subscription. Can you please refund the duplicate charge?",
+      "expected_category": "billing",
+      "expected_summary": "Customer requests refund for a duplicate subscription charge.",
+      "difficulty": "easy",
+      "notes": "Clear billing issue. Explicit mention of charge and refund request."
+    },
+    {
+      "id": "TC003",
+      "email": "Your API keeps returning a 500 Internal Server Error whenever we try to call the /export endpoint. This has been happening for 2 days.",
+      "expected_category": "technical",
+      "expected_summary": "Customer reports persistent 500 error on the export API endpoint.",
+      "difficulty": "easy",
+      "notes": "Clear technical issue. Specific endpoint and error code mentioned."
+    },
+    {
+      "id": "TC004",
+      "email": "Hi there, just wanted to say your onboarding experience is really smooth. Keep up the good work!",
+      "expected_category": "general",
+      "expected_summary": "Customer compliments the onboarding experience.",
+      "difficulty": "easy",
+      "notes": "Clear general message. No actionable request, fits no specific category."
+    },
+    {
+      "id": "TC005",
+      "email": "Please cancel my subscription immediately.",
+      "expected_category": "billing",
+      "expected_summary": "Customer requests immediate cancellation of their subscription.",
+      "difficulty": "easy",
+      "notes": "Short but unambiguous. Subscription cancellation is a billing action."
+    },
+    {
+      "id": "TC006",
+      "email": "I need to update the email address on my account. The current one is an old work email I no longer have access to.",
+      "expected_category": "account",
+      "expected_summary": "Customer needs to update their account email address.",
+      "difficulty": "easy",
+      "notes": "Clear account profile change request."
+    },
+    {
+      "id": "TC007",
+      "email": "The dashboard is not loading for me. I just see a blank white screen after logging in.",
+      "expected_category": "technical",
+      "expected_summary": "Customer sees a blank screen after logging in instead of the dashboard.",
+      "difficulty": "easy",
+      "notes": "Clear product bug. No billing or account overlap."
+    },
+    {
+      "id": "TC008",
+      "email": "Do you offer discounts for nonprofits?",
+      "expected_category": "billing",
+      "expected_summary": "Customer inquires about nonprofit pricing discounts.",
+      "difficulty": "easy",
+      "notes": "Pricing inquiry is a billing topic even without an existing charge."
+    },
+    {
+      "id": "TC009",
+      "email": "I forgot my password.",
+      "expected_category": "account",
+      "expected_summary": "Customer has forgotten their password and needs a reset.",
+      "difficulty": "easy",
+      "notes": "Minimal email. Password reset is unambiguously account category."
+    },
+    {
+      "id": "TC010",
+      "email": "Your Zapier integration stopped working after your update last week. Zaps that were running fine are now failing with an authentication error.",
+      "expected_category": "technical",
+      "expected_summary": "Customer reports Zapier integration broken after a recent platform update.",
+      "difficulty": "easy",
+      "notes": "Third-party integration failure caused by a platform change. Clear technical issue."
+    },
+    {
+      "id": "TC011",
+      "email": "I'm trying to upgrade my plan but the checkout page keeps throwing an error. I've tried three browsers.",
+      "expected_category": "billing",
+      "expected_summary": "Customer cannot complete a plan upgrade due to a checkout page error.",
+      "difficulty": "medium",
+      "notes": "Billing intent (upgrading plan) with a technical symptom (checkout error). The root goal is billing, so billing wins."
+    },
+    {
+      "id": "TC012",
+      "email": "I cancelled my subscription last month but I was still charged this month. Also, I can no longer access my data exports. Are those related?",
+      "expected_category": "billing",
+      "expected_summary": "Customer was charged after cancelling and cannot access data exports.",
+      "difficulty": "medium",
+      "notes": "Two issues in one email: erroneous charge (billing) and access loss (account/technical). Lead issue is the charge."
+    },
+    {
+      "id": "TC013",
+      "email": "We're trying to process a payment through your API and getting a 403 Forbidden response. Our API key is valid and has the correct permissions. Is this a billing issue on our account?",
+      "expected_category": "technical",
+      "expected_summary": "Customer receives 403 error on payment API despite valid credentials.",
+      "difficulty": "hard",
+      "notes": "Classic billing/technical ambiguity. Customer even asks if it's billing. But the symptom is an API error with valid credentials — that is a technical issue to debug, not a billing account status problem."
+    },
+    {
+      "id": "TC014",
+      "email": "My colleague had an account but left the company. I need to transfer ownership of the workspace to me and remove their access.",
+      "expected_category": "account",
+      "expected_summary": "Customer needs to transfer workspace ownership after a colleague's departure.",
+      "difficulty": "medium",
+      "notes": "Involves both access removal and ownership transfer. Both are account management actions."
+    },
+    {
+      "id": "TC015",
+      "email": "When will you support SSO with Okta? This is blocking our enterprise rollout.",
+      "expected_category": "technical",
+      "expected_summary": "Customer requests Okta SSO support which is blocking their enterprise deployment.",
+      "difficulty": "medium",
+      "notes": "Feature request framed as a blocker. SSO is a technical integration topic, not billing or account management."
+    },
+    {
+      "id": "TC016",
+      "email": "I think there's a bug in your CSV export. Some rows are missing when I filter by date range.",
+      "expected_category": "technical",
+      "expected_summary": "Customer reports missing rows in CSV export when filtering by date.",
+      "difficulty": "easy",
+      "notes": "Clear product bug with a specific reproducible condition."
+    },
+    {
+      "id": "TC017",
+      "email": "Your recovery code is 847291. Do not share this with anyone.",
+      "expected_category": "general",
+      "expected_summary": "Email contains an automated recovery code and is not a customer query.",
+      "difficulty": "hard",
+      "notes": "Out-of-domain input. This is an automated system email, not a customer support request. Should not be fabricated into a fake customer problem. General is the correct fallback."
+    },
+    {
+      "id": "TC018",
+      "email": "RE: RE: RE: FWD: Meeting notes - Q3 planning",
+      "expected_category": "general",
+      "expected_summary": "Email appears to be a misfiled meeting thread with no customer support content.",
+      "difficulty": "hard",
+      "notes": "Out-of-domain input. A forwarded internal email chain. Model should not hallucinate a support issue."
+    },
+    {
+      "id": "TC019",
+      "email": "helo i cant login pls help asap",
+      "expected_category": "account",
+      "expected_summary": "Customer urgently reports being unable to log in.",
+      "difficulty": "medium",
+      "notes": "Typos, informal language, very short. Despite noise, the intent is clear: login = account."
+    },
+    {
+      "id": "TC020",
+      "email": "I'm being charged for a seat that belongs to a user I deleted three months ago. Why is this still on my invoice?",
+      "expected_category": "billing",
+      "expected_summary": "Customer is billed for a deleted user seat and wants the charge explained.",
+      "difficulty": "medium",
+      "notes": "Account action (deleting user) with a billing consequence (seat charge persisting). The complaint is about the invoice."
+    },
+    {
+      "id": "TC021",
+      "email": "Estoy teniendo problemas para acceder a mi cuenta. El sistema dice que mi correo no existe.",
+      "expected_category": "account",
+      "expected_summary": "Customer reports their email is not recognized by the system during login.",
+      "difficulty": "medium",
+      "notes": "Email is in Spanish. Model must still classify correctly regardless of language. Clear account issue."
+    },
+    {
+      "id": "TC022",
+      "email": "Wow, amazing. Another outage. Third one this month. Really loving the reliability.",
+      "expected_category": "technical",
+      "expected_summary": "Customer sarcastically complains about repeated service outages.",
+      "difficulty": "hard",
+      "notes": "Sarcasm. Literal reading might suggest positive sentiment but the customer is reporting a service reliability problem. Technical category."
+    },
+    {
+      "id": "TC023",
+      "email": "I need an invoice for my company's accounting department. Our company name is Acme Corp and our VAT number is DE123456789.",
+      "expected_category": "billing",
+      "expected_summary": "Customer requests a formal invoice with company name and VAT number.",
+      "difficulty": "easy",
+      "notes": "Invoice request is a billing administrative task."
+    },
+    {
+      "id": "TC024",
+      "email": "Can you explain the difference between the Pro and Enterprise plans?",
+      "expected_category": "billing",
+      "expected_summary": "Customer requests a comparison of Pro and Enterprise plan features.",
+      "difficulty": "medium",
+      "notes": "Could seem like general inquiry but plan comparisons are fundamentally about pricing and billing tiers."
+    },
+    {
+      "id": "TC025",
+      "email": "I want to enable two-factor authentication on my account but I can't find where to set it up.",
+      "expected_category": "account",
+      "expected_summary": "Customer wants to enable two-factor authentication but cannot locate the setting.",
+      "difficulty": "easy",
+      "notes": "2FA setup is an account security action. Clear and unambiguous."
+    },
+    {
+      "id": "TC026",
+      "email": "Your webhook events are being delivered with a 45-second delay. Our SLA requires near real-time delivery. This started after your infrastructure migration.",
+      "expected_category": "technical",
+      "expected_summary": "Customer reports webhook delivery delays following a platform infrastructure migration.",
+      "difficulty": "medium",
+      "notes": "Specific technical issue with clear triggering event (infrastructure migration). No billing or account overlap."
+    },
+    {
+      "id": "TC027",
+      "email": "I accidentally deleted my entire project. Is there any way to recover it?",
+      "expected_category": "technical",
+      "expected_summary": "Customer accidentally deleted a project and is requesting data recovery.",
+      "difficulty": "medium",
+      "notes": "Could seem like account but data recovery from accidental deletion is a technical/product operation, not account management."
+    },
+    {
+      "id": "TC028",
+      "email": "My free trial ends tomorrow and I haven't decided if I want to upgrade yet. Can you extend it by a week?",
+      "expected_category": "billing",
+      "expected_summary": "Customer requests a one-week extension of their free trial.",
+      "difficulty": "medium",
+      "notes": "Trial extension is a billing/subscription decision even though no money is involved yet."
+    },
+    {
+      "id": "TC029",
+      "email": "I'd like to add 5 more seats to our current Enterprise plan.",
+      "expected_category": "billing",
+      "expected_summary": "Customer requests adding five seats to their Enterprise subscription.",
+      "difficulty": "easy",
+      "notes": "Clear subscription change. Billing category."
+    },
+    {
+      "id": "TC030",
+      "email": "We are a university research lab. Do you have an academic licensing program?",
+      "expected_category": "billing",
+      "expected_summary": "University research lab inquires about academic licensing options.",
+      "difficulty": "medium",
+      "notes": "Licensing inquiry is a billing/sales topic. The academic context doesn't change the category."
+    }
+  ]
+}

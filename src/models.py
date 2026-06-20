@@ -1,5 +1,5 @@
 from pydantic import BaseModel, field_validator
-from typing import Literal
+from typing import Literal, Optional
 from datetime import datetime
 
 
@@ -21,6 +21,22 @@ class ClassifierOutput(BaseModel):
         if not v.strip():
             raise ValueError("summary cannot be empty")
         return v.strip()
+
+
+class TestCase(BaseModel):
+    id: str
+    email: str
+    expected_category: Literal["billing", "technical", "account", "general"]
+    expected_summary: str
+    difficulty: Literal["easy", "medium", "hard"]
+    notes: str
+
+
+class GoldenDataset(BaseModel):
+    version: str
+    created_at: str
+    description: str
+    test_cases: list[TestCase]
 
 
 class ClassifierResult(BaseModel):
