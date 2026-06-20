@@ -11,3 +11,5 @@ dist/
 build/
 .pytest_cache/
 *.db
+reports/
+!reports/sample_report.html
