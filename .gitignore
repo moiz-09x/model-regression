@@ -1,0 +1,13 @@
+.env
+Project_Guide_Model_Regression_Detection_System.md
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+*.db
