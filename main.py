@@ -14,8 +14,11 @@ run = run_eval(
 
 runs = load_latest_runs(n=7)
 
+# Only compare runs on the same dataset version — cross-version comparisons are apples to oranges
+same_dataset_runs = [r for r in runs if r.dataset_version == run.dataset_version]
+
 diff  = compare(baseline=runs[-2], current=runs[-1]) if len(runs) >= 2 else None
-drift = detect_drift(runs) if len(runs) >= 2 else None
+drift = detect_drift(same_dataset_runs) if len(same_dataset_runs) >= 2 else None
 
 if diff:
     print_diff(diff)
@@ -23,7 +26,7 @@ if diff:
 if drift:
     print(f"\n{drift.message}")
 
-report_path = generate_report(run=run, diff=diff, drift=drift, all_runs=runs)
+report_path = generate_report(run=run, diff=diff, drift=drift, all_runs=same_dataset_runs)
 
 if diff:
     payload = build_slack_payload(run, diff, drift, str(report_path.resolve()))
