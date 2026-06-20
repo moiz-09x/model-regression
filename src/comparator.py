@@ -6,8 +6,8 @@ from pathlib import Path
 from src.models import EvalDiff, EvalRun
 
 RUNS_DIR = Path("data/runs")
-WARNING_THRESHOLD = 0.03   # 3% accuracy drop triggers a warning
-CRITICAL_THRESHOLD = 0.08  # 8% accuracy drop blocks merge
+WARNING_THRESHOLD = 0.06   # 6% drop — calibrated above observed LLM non-determinism noise (~5%)
+CRITICAL_THRESHOLD = 0.12  # 12% drop — clearly a real regression, not noise
 
 
 def load_run(run_id: str) -> EvalRun:

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Eval — 20260620_221432_v1.1</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          font-size: 14px; line-height: 1.6; color: #111; background: #fff; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px; }
+
+  .status-line { font-size: 13px; color: #555; margin-bottom: 32px; }
+  .status-line strong { color: #111; }
+
+  h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  h2 { font-size: 13px; font-weight: 600; text-transform: uppercase;
+        letter-spacing: .06em; color: #555; margin: 40px 0 12px; }
+
+  .scorecard { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+                background: #e5e5e5; border: 1px solid #e5e5e5; margin-bottom: 40px; }
+  .metric { background: #fff; padding: 16px; }
+  .metric .label { font-size: 11px; color: #888; text-transform: uppercase;
+                    letter-spacing: .05em; margin-bottom: 6px; }
+  .metric .val { font-size: 24px; font-weight: 600; }
+  .metric .sub { font-size: 12px; color: #888; margin-top: 2px; }
+  .up { color: #16a34a; } .down { color: #dc2626; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 600;
+        text-transform: uppercase; letter-spacing: .05em; color: #888;
+        border-bottom: 1px solid #e5e5e5; }
+  td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+  tr.fail td { background: #fafafa; }
+  .fail-marker { color: #dc2626; font-weight: 600; }
+  .pass-marker { color: #16a34a; }
+
+  .notice { padding: 12px 16px; border-left: 3px solid #e5e5e5;
+             color: #555; font-size: 13px; margin-bottom: 24px; }
+  .notice.warn { border-color: #f59e0b; }
+
+  .trend { display: flex; align-items: flex-end; gap: 3px; height: 48px; margin-top: 12px; }
+  .bar { flex: 1; background: #111; border-radius: 2px 2px 0 0; min-height: 2px; }
+  .trend-labels { display: flex; justify-content: space-between;
+                   font-size: 11px; color: #aaa; margin-top: 4px; }
+
+  .meta { font-size: 12px; color: #555; margin-top: 48px; padding-top: 24px;
+           border-top: 1px solid #e5e5e5; }
+  .meta dt { color: #aaa; float: left; width: 140px; }
+  .meta dd { margin-left: 140px; margin-bottom: 4px; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>WARNING</h1>
+  <div class="status-line">
+    <strong>v1.1</strong> &nbsp;/&nbsp;
+    <strong>v1.2</strong> &nbsp;·&nbsp;
+    deepseek-v4-flash &nbsp;·&nbsp;
+    2026-06-20 22:14:32 UTC
+  </div>
+
+  
+  <div class="scorecard">
+    <div class="metric">
+      <div class="label">Accuracy</div>
+      <div class="val">91.7%</div>
+      <div class="sub"><span class="down">-5.5% vs baseline</span></div>
+    </div>
+    <div class="metric">
+      <div class="label">Summary Score</div>
+      <div class="val">4.69<span style="font-size:14px;font-weight:400">/5</span></div>
+      <div class="sub"><span class="down">-0.09 vs baseline</span></div>
+    </div>
+    <div class="metric">
+      <div class="label">Avg Latency</div>
+      <div class="val">2297<span style="font-size:14px;font-weight:400">ms</span></div>
+      <div class="sub">per request</div>
+    </div>
+    <div class="metric">
+      <div class="label">Tokens Used</div>
+      <div class="val">21,983</div>
+      <div class="sub">36 cases</div>
+    </div>
+  </div>
+
+  <div class="notice warn">Slow drift detected over 5 runs: rolling avg 90.6% is 6.7% below peak 97.2%.</div>
+
+  
+  <h2>Accuracy trend (5 runs)</h2>
+  <div class="trend"><div class="bar" style="height:88%" title="86.1%"></div><div class="bar" style="height:88%" title="86.1%"></div><div class="bar" style="height:94%" title="91.7%"></div><div class="bar" style="height:100%" title="97.2%"></div><div class="bar" style="height:94%" title="91.7%"></div></div>
+  <div class="trend-labels">
+    <span>20260620_211643_</span>
+    <span>20260620_221432_</span>
+  </div>
+
+  
+  <h2>Regressions (3)</h2>
+  <table>
+    <thead><tr><th>ID</th><th>Difficulty</th><th>Expected</th><th>Got</th>
+    <th>Expected Summary</th><th>Actual Summary</th></tr></thead>
+    <tbody><tr class="fail">
+          <td><code>TC015</code></td>
+          <td>medium</td>
+          <td>technical</td>
+          <td class="fail-marker">general</td>
+          <td>Customer requests Okta SSO support which is blocking their enterprise deployment.</td>
+          <td>Customer asks when Okta SSO will be supported as it blocks enterprise rollout.</td>
+        </tr><tr class="fail">
+          <td><code>TC031</code></td>
+          <td>hard</td>
+          <td>account</td>
+          <td class="fail-marker">out_of_scope</td>
+          <td>Customer reports being unable to log in to their account.</td>
+          <td>User attempts to manipulate classifier by overriding instructions.</td>
+        </tr><tr class="fail">
+          <td><code>TC033</code></td>
+          <td>hard</td>
+          <td>technical</td>
+          <td class="fail-marker">out_of_scope</td>
+          <td>Customer receives 401 errors on the users API endpoint despite a valid bearer token.</td>
+          <td>Email contains a system override attempt.</td>
+        </tr></tbody>
+  </table>
+
+  
+  <h2>All results</h2>
+  <table>
+    <thead><tr><th>ID</th><th>Status</th><th>Expected</th><th>Got</th>
+    <th>Summary</th><th>Score</th></tr></thead>
+    <tbody><tr class="">
+          <td><code>TC001</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>account</td>
+          <td>—</td>
+          <td>Customer needs help logging in after password reset.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC002</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>billing</td>
+          <td>—</td>
+          <td>Customer requests refund for duplicate Pro subscription charge.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC003</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>technical</td>
+          <td>—</td>
+          <td>Customer needs the /export API endpoint 500 error fixed.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC004</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>general</td>
+          <td>—</td>
+          <td>Customer gives positive feedback about the onboarding experience.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC005</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>billing</td>
+          <td>—</td>
+          <td>Customer wants to cancel their subscription.</td>
+          <td>4/5</td>
+        </tr><tr class="">
+          <td><code>TC006</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>account</td>
+          <td>—</td>
+          <td>Customer needs to update their account email address.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC007</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>technical</td>
+          <td>—</td>
+          <td>Customer sees a blank white screen instead of the dashboard after logging in.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC008</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>billing</td>
+          <td>—</td>
+          <td>Customer asks about discounts for nonprofit organizations.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC009</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>account</td>
+          <td>—</td>
+          <td>Customer needs help resetting their password.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC010</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>technical</td>
+          <td>—</td>
+          <td>Customer needs help fixing Zapier integration authentication errors after an update.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC011</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>billing</td>
+          <td>—</td>
+          <td>Customer needs help upgrading their plan due to checkout error.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC012</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>billing</td>
+          <td>—</td>
+          <td>Customer was charged after cancellation and lost data access.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC013</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>technical</td>
+          <td>—</td>
+          <td>Customer reports 403 error when processing payment via API.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC014</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>account</td>
+          <td>—</td>
+          <td>Customer needs to transfer workspace ownership and remove former colleague's access.</td>
+          <td>5/5</td>
+        </tr><tr class="fail">
+          <td><code>TC015</code></td>
+          <td><span class="fail-marker">FAIL</span></td>
+          <td>technical</td>
+          <td>general</td>
+          <td>Customer asks when Okta SSO will be supported as it blocks enterprise rollout.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC016</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>technical</td>
+          <td>—</td>
+          <td>Customer reports missing rows in CSV export when filtering by date range.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC017</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>out_of_scope</td>
+          <td>—</td>
+          <td>Automated recovery code notification email.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC018</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>out_of_scope</td>
+          <td>—</td>
+          <td>This is a forwarded internal email about meeting notes, not a support request.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC019</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>account</td>
+          <td>—</td>
+          <td>Customer needs help logging in.</td>
+          <td>4/5</td>
+        </tr><tr class="">
+          <td><code>TC020</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>billing</td>
+          <td>—</td>
+          <td>Customer wants to understand why they are charged for a deleted user's seat.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC021</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>account</td>
+          <td>—</td>
+          <td>Customer cannot log in as email is not recognized.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC022</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>technical</td>
+          <td>—</td>
+          <td>Customer reports multiple outages this month.</td>
+          <td>4/5</td>
+        </tr><tr class="">
+          <td><code>TC023</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>billing</td>
+          <td>—</td>
+          <td>Customer requests an invoice for Acme Corp with VAT number.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC024</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>billing</td>
+          <td>—</td>
+          <td>Customer wants to know the difference between Pro and Enterprise plans.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC025</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>account</td>
+          <td>—</td>
+          <td>Customer needs help finding the two-factor authentication setup.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC026</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>technical</td>
+          <td>—</td>
+          <td>Customer reports 45-second delay in webhook delivery after infrastructure migration.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC027</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>technical</td>
+          <td>—</td>
+          <td>Customer seeks to recover a deleted project.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC028</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>billing</td>
+          <td>—</td>
+          <td>Customer requests a one-week extension on their free trial.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC029</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>billing</td>
+          <td>—</td>
+          <td>Customer wants to add 5 seats to their Enterprise plan.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC030</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>billing</td>
+          <td>—</td>
+          <td>Customer asks about academic licensing program.</td>
+          <td>5/5</td>
+        </tr><tr class="fail">
+          <td><code>TC031</code></td>
+          <td><span class="fail-marker">FAIL</span></td>
+          <td>account</td>
+          <td>out_of_scope</td>
+          <td>User attempts to manipulate classifier by overriding instructions.</td>
+          <td>1/5</td>
+        </tr><tr class="">
+          <td><code>TC032</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>out_of_scope</td>
+          <td>—</td>
+          <td>Customer tries to change classifier role and claims double charge.</td>
+          <td>5/5</td>
+        </tr><tr class="fail">
+          <td><code>TC033</code></td>
+          <td><span class="fail-marker">FAIL</span></td>
+          <td>technical</td>
+          <td>out_of_scope</td>
+          <td>Email contains a system override attempt.</td>
+          <td>1/5</td>
+        </tr><tr class="">
+          <td><code>TC034</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>out_of_scope</td>
+          <td>—</td>
+          <td>Adversarial email attempting to override classifier instructions.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC035</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>out_of_scope</td>
+          <td>—</td>
+          <td>Email attempts to manipulate system by requesting system prompt and forcing classification.</td>
+          <td>5/5</td>
+        </tr><tr class="">
+          <td><code>TC036</code></td>
+          <td><span class="pass-marker">pass</span></td>
+          <td>out_of_scope</td>
+          <td>—</td>
+          <td>Customer requests internal system prompt and instructions, not a support issue.</td>
+          <td>5/5</td>
+        </tr></tbody>
+  </table>
+
+  
+  <dl class="meta">
+    <dt>Run ID</dt>       <dd>20260620_221432_v1.1</dd>
+    <dt>Baseline</dt>     <dd>20260620_220042_v1.1</dd>
+    <dt>Prompt</dt>       <dd>v1.1</dd>
+    <dt>Dataset</dt>      <dd>v1.2</dd>
+    <dt>Model</dt>        <dd>deepseek-v4-flash</dd>
+    <dt>Timestamp</dt>    <dd>2026-06-20T22:14:32.139999</dd>
+  </dl>
+
+</div>
+</body>
+</html>
