@@ -5,8 +5,8 @@ from src.evaluator import run_eval
 from src.comparator import compare, load_latest_runs, print_diff
 
 run = run_eval(
-    prompt_path="prompts/support_classifier_v1.0.yaml",
-    dataset_path="data/golden_dataset_v1.0.json",
+    prompt_path="prompts/support_classifier_v1.1.yaml",
+    dataset_path="data/golden_dataset_v1.2.json",
 )
 
 runs = load_latest_runs(n=2)

@@ -11,8 +11,11 @@ class PromptConfig(BaseModel):
     user_prompt_template: str
 
 
+Category = Literal["billing", "technical", "account", "general", "out_of_scope"]
+
+
 class ClassifierOutput(BaseModel):
-    category: Literal["billing", "technical", "account", "general"]
+    category: Category
     summary: str
 
     @field_validator("summary")
@@ -26,7 +29,7 @@ class ClassifierOutput(BaseModel):
 class TestCase(BaseModel):
     id: str
     email: str
-    expected_category: Literal["billing", "technical", "account", "general"]
+    expected_category: Category
     expected_summary: str
     difficulty: Literal["easy", "medium", "hard"]
     notes: str
@@ -57,8 +60,8 @@ class ClassifierResult(BaseModel):
 class CaseResult(BaseModel):
     test_case_id: str
     difficulty: Literal["easy", "medium", "hard"]
-    expected_category: Literal["billing", "technical", "account", "general"]
-    actual_category: Literal["billing", "technical", "account", "general"]
+    expected_category: Category
+    actual_category: Category
     category_match: bool
     expected_summary: str
     actual_summary: str

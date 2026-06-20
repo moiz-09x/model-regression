@@ -34,7 +34,7 @@ def compare(baseline: EvalRun, current: EvalRun) -> EvalDiff:
     regressions  = [id for id, passed in current_passed.items()  if not passed and baseline_passed.get(id)]
     improvements = [id for id, passed in current_passed.items()  if passed  and not baseline_passed.get(id)]
 
-    categories = ["billing", "technical", "account", "general"]
+    categories = ["billing", "technical", "account", "general", "out_of_scope"]
     per_category_delta = {
         cat: round(current.accuracy_for_category(cat) - baseline.accuracy_for_category(cat), 4)
         for cat in categories
