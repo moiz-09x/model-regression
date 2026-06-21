@@ -38,23 +38,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          OUTPUT=$(cat eval_output.txt)
-          STATUS=$(grep -oP '(?<=Status: )\w+' eval_output.txt | head -1 || echo "unknown")
-          ACCURACY=$(grep -oP 'Accuracy: \K[0-9.]+%' eval_output.txt | head -1 || echo "—")
-
           RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          SUMMARY=$(cat reports/summary.md)
+          BODY="${SUMMARY}
 
-          BODY="## Eval Pipeline — \`${STATUS^^}\`
-
-          **Accuracy:** ${ACCURACY} &nbsp;·&nbsp; [View full report (Actions artifacts)](${RUN_URL})
-
-          <details><summary>Full output</summary>
-
-          \`\`\`
-          ${OUTPUT}
-          \`\`\`
-
-          </details>"
+          [Full HTML report (download from artifacts)](${RUN_URL})"
 
           gh pr comment ${{ github.event.pull_request.number }} --body "$BODY"
 

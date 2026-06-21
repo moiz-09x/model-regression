@@ -17,7 +17,57 @@ def generate_report(
     path = REPORTS_DIR / f"report_{run.run_id}.html"
     path.write_text(_render(run, diff, drift, all_runs))
     print(f"Report generated: {path}")
+
+    summary_path = REPORTS_DIR / "summary.md"
+    summary_path.write_text(_markdown_summary(run, diff, drift))
+
     return path
+
+
+def _markdown_summary(run: EvalRun, diff: EvalDiff | None, drift: DriftResult | None) -> str:
+    status = diff.status if diff else "pass"
+    icon = {"pass": "✓", "warning": "⚠", "critical": "✗"}[status]
+
+    acc_delta   = f" ({diff.accuracy_delta:+.1%} vs baseline)" if diff else ""
+    score_delta = f" ({diff.summary_score_delta:+.2f} vs baseline)" if diff else ""
+
+    lines = [
+        f"## Eval — {status.upper()} {icon}",
+        "",
+        f"| | |",
+        f"|---|---|",
+        f"| Accuracy | **{run.accuracy:.1%}**{acc_delta} |",
+        f"| Summary score | {run.avg_summary_score}/5{score_delta} |",
+        f"| Avg latency | {run.avg_latency_ms:.0f}ms |",
+        f"| Tokens | {run.total_tokens:,} ({run.total_cases} cases) |",
+        f"| Prompt | `{run.prompt_version}` |",
+        f"| Dataset | `{run.dataset_version}` |",
+        "",
+    ]
+
+    if diff and diff.regressions:
+        lines.append(f"### Regressions ({len(diff.regressions)})")
+        lines.append("")
+        lines.append("| Case | Expected | Got |")
+        lines.append("|------|----------|-----|")
+        reg_ids = set(diff.regressions)
+        for r in run.case_results:
+            if r.test_case_id in reg_ids:
+                lines.append(f"| `{r.test_case_id}` | {r.expected_category} | **{r.actual_category}** |")
+        lines.append("")
+    else:
+        lines.append("No regressions detected.")
+        lines.append("")
+
+    if diff and diff.improvements:
+        lines.append(f"### Improvements ({len(diff.improvements)}): " + ", ".join(f"`{id}`" for id in diff.improvements))
+        lines.append("")
+
+    if drift and drift.is_drifting:
+        lines.append(f"> ⚠ **Drift:** {drift.message}")
+        lines.append("")
+
+    return "\n".join(lines)
 
 
 def _render(run: EvalRun, diff: EvalDiff | None, drift: DriftResult | None, all_runs: list[EvalRun]) -> str:
