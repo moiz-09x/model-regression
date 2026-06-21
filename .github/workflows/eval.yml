@@ -42,9 +42,11 @@ jobs:
           STATUS=$(grep -oP '(?<=Status: )\w+' eval_output.txt | head -1 || echo "unknown")
           ACCURACY=$(grep -oP 'Accuracy: \K[0-9.]+%' eval_output.txt | head -1 || echo "—")
 
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
           BODY="## Eval Pipeline — \`${STATUS^^}\`
 
-          **Accuracy:** ${ACCURACY}
+          **Accuracy:** ${ACCURACY} &nbsp;·&nbsp; [View full report (Actions artifacts)](${RUN_URL})
 
           <details><summary>Full output</summary>
 
@@ -55,6 +57,14 @@ jobs:
           </details>"
 
           gh pr comment ${{ github.event.pull_request.number }} --body "$BODY"
+
+      - name: Upload eval report
+        if: always()   # upload even if the eval failed
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-report-${{ github.run_id }}
+          path: reports/
+          retention-days: 30
 
       - name: Fail on critical regression
         run: |
