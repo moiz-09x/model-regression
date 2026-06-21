@@ -7,6 +7,11 @@ on:
       - "data/golden_dataset_*.json"
       - "config.yaml"
 
+# Cancel any in-progress run on the same branch when a new commit arrives
+concurrency:
+  group: eval-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   eval:
     runs-on: ubuntu-latest
@@ -18,14 +23,33 @@ jobs:
         with:
           fetch-depth: 0   # needed so we can load historical run files for diffing
 
+      # Exit early if the latest commit didn't touch eval-relevant files.
+      # The pull_request paths filter fires when *any* PR commit touched those
+      # paths — not just the latest one. This check closes that gap.
+      - name: Check if relevant files changed in this commit
+        id: changed
+        run: |
+          CHANGED=$(git diff HEAD~1 HEAD --name-only 2>/dev/null \
+            | grep -E '^(prompts/|data/golden_dataset_|config\.yaml)' || true)
+          if [ -z "$CHANGED" ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "Latest commit did not touch prompts, dataset, or config — skipping eval."
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "Relevant files changed: $CHANGED"
+          fi
+
       - uses: actions/setup-python@v5
+        if: steps.changed.outputs.skip == 'false'
         with:
           python-version: "3.11"
 
       - name: Install dependencies
+        if: steps.changed.outputs.skip == 'false'
         run: pip install -r requirements.txt
 
       - name: Run eval
+        if: steps.changed.outputs.skip == 'false'
         id: eval
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
@@ -34,7 +58,7 @@ jobs:
         continue-on-error: true   # capture output even on exit code 1
 
       - name: Post PR comment
-        if: github.event_name == 'pull_request'
+        if: steps.changed.outputs.skip == 'false' && github.event_name == 'pull_request'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -47,7 +71,7 @@ jobs:
           gh pr comment ${{ github.event.pull_request.number }} --body "$BODY"
 
       - name: Upload eval report
-        if: always()   # upload even if the eval failed
+        if: steps.changed.outputs.skip == 'false'
         uses: actions/upload-artifact@v4
         with:
           name: eval-report-${{ github.run_id }}
@@ -55,6 +79,7 @@ jobs:
           retention-days: 30
 
       - name: Fail on critical regression
+        if: steps.changed.outputs.skip == 'false'
         run: |
           if grep -q "Critical regression detected" eval_output.txt; then
             echo "Blocking merge due to critical regression."
