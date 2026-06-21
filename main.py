@@ -1,4 +1,5 @@
 import sys
+import yaml
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -8,9 +9,12 @@ from src.drift import detect_drift
 from src.reporter import generate_report
 from src.alerting import build_slack_payload, send_slack_alert
 
+with open("config.yaml") as f:
+    config = yaml.safe_load(f)
+
 run = run_eval(
-    prompt_path="prompts/support_classifier_v1.1.yaml",
-    dataset_path="data/golden_dataset_v1.2.json",
+    prompt_path=config["prompt"],
+    dataset_path=config["dataset"],
 )
 
 runs = load_latest_runs(n=7)

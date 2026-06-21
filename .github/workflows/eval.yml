@@ -5,10 +5,13 @@ on:
     paths:
       - "prompts/**"
       - "data/golden_dataset_*.json"
+      - "config.yaml"
 
 jobs:
   eval:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write   # required to post PR comments
 
     steps:
       - uses: actions/checkout@v4
