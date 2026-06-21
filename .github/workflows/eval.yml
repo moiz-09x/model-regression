@@ -28,8 +28,10 @@ jobs:
       # paths — not just the latest one. This check closes that gap.
       - name: Check if relevant files changed in this commit
         id: changed
+        env:
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
-          CHANGED=$(git diff HEAD~1 HEAD --name-only 2>/dev/null \
+          CHANGED=$(git diff ${PR_HEAD}~1 ${PR_HEAD} --name-only 2>/dev/null \
             | grep -E '^(prompts/|data/golden_dataset_|config\.yaml)' || true)
           if [ -z "$CHANGED" ]; then
             echo "skip=true" >> $GITHUB_OUTPUT
