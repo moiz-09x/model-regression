@@ -1,3 +1,4 @@
+import sys
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -31,3 +32,8 @@ report_path = generate_report(run=run, diff=diff, drift=drift, all_runs=same_dat
 if diff:
     payload = build_slack_payload(run, diff, drift, str(report_path.resolve()))
     send_slack_alert(payload)
+
+# Exit non-zero on critical regression so GitHub Actions blocks the PR merge
+if diff and diff.status == "critical":
+    print("\nCritical regression detected — blocking merge.", file=sys.stderr)
+    sys.exit(1)
