@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import json
+import json   # still needed for the webhook POST body
 import os
 from src.models import EvalDiff, EvalRun
 from src.drift import DriftResult
@@ -49,8 +49,6 @@ def send_slack_alert(payload: dict) -> None:
     webhook_url = os.environ.get("SLACK_WEBHOOK_URL")
     if not webhook_url:
         print("[alerting] SLACK_WEBHOOK_URL not set — skipping Slack notification.")
-        print("[alerting] Payload that would have been sent:")
-        print(json.dumps(payload, indent=2))
         return
 
     import urllib.request

@@ -79,6 +79,19 @@ DRIFT_THRESHOLD = 0.05   # rolling avg drop below peak that flags slow drift
 
 ---
 
+## Switching prompt or dataset versions
+
+The active versions are declared in `config.yaml`:
+
+```yaml
+prompt: prompts/support_classifier_v1.1.yaml
+dataset: data/golden_dataset_v1.2.json
+```
+
+To promote a new version: update the relevant path here and open a PR. CI will automatically run the eval against the new version and diff against the last saved run. Do not update `main.py` — it reads from `config.yaml`.
+
+---
+
 ## CI/CD
 
 The GitHub Actions workflow (`.github/workflows/eval.yml`) triggers on any PR that modifies files under `prompts/` or `data/golden_dataset_*.json`. It runs the full eval, posts a summary comment on the PR, and exits with code 1 on a critical regression — which blocks merge.
